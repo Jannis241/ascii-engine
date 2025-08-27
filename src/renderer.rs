@@ -1,4 +1,4 @@
-use crate::object::Drawable;
+use crate::Object;
 
 pub struct Renderer;
 
@@ -7,9 +7,10 @@ impl Renderer {
         Renderer
     }
 
-    pub fn render_frame<T>(&self, objects: Vec<Box<T>>)
-    where
-        T: Drawable + 'static + ?Sized,
-    {
+    pub fn render_frame(&self, screen_size: &(u32, u32), objects: &Vec<Object>) {
+        for obj in objects {
+            let bp = obj.get_blocked_points();
+            println!("Blocked points: {bp:?}");
+        }
     }
 }

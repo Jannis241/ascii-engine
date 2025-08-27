@@ -1,43 +1,25 @@
-pub trait Drawable {
-    fn draw(&self) {}
-}
-
 pub enum Color {
     White,
     Black,
+    Red,
+    Blue,
+    Yellow,
 }
 
-pub struct Circle {
-    center: (u32, u32),
-    radius: u32,
-    color: Color,
+pub struct Object {
+    blocked_points: Vec<(u32, u32)>,
 }
 
-impl Circle {
-    pub fn new(center: (u32, u32), radius: u32, color: Color) -> Self {
-        Circle {
-            center,
-            radius,
-            color,
-        }
+impl Object {
+    pub fn custom(blocked_points: Vec<(u32, u32)>, color: Color) -> Object {
+        Object { blocked_points }
+    }
+
+    pub fn circle(center: (u32, u32), radius: u32, color: Color) -> Self {
+        let blocked_points = vec![];
+        Object { blocked_points }
+    }
+    pub fn get_blocked_points(&self) -> &Vec<(u32, u32)> {
+        &self.blocked_points
     }
 }
-
-pub struct Square {
-    top_left: (u32, u32),
-    bottom_right: (u32, u32),
-    color: Color,
-}
-
-impl Square {
-    pub fn new(top_left: (u32, u32), bottom_right: (u32, u32), color: Color) -> Self {
-        Square {
-            top_left,
-            bottom_right,
-            color,
-        }
-    }
-}
-
-impl Drawable for Square {}
-impl Drawable for Circle {}

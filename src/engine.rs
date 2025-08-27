@@ -1,6 +1,4 @@
-use std::rc::Rc;
-
-use crate::{object::Drawable, renderer::Renderer, Circle, Settings};
+use crate::{object::Object, renderer::Renderer, Settings};
 
 pub trait App {
     fn update(&mut self, engine: &mut Engine);
@@ -8,7 +6,7 @@ pub trait App {
 
 pub struct Engine {
     running: bool,
-    objects: Vec<Box<dyn Drawable>>,
+    objects: Vec<Object>,
     settings: Settings,
 }
 
@@ -21,22 +19,20 @@ impl Engine {
         self.settings.screen_size.0
     }
 
+    // help functions -> eigentlich soll alles über draw object lafuen.
     pub fn draw_line(&self) {}
     pub fn draw_circle(&self) {}
     pub fn draw_square(&self) {}
     pub fn draw_triangle(&self) {}
-    pub fn draw_object<T>(&mut self, object: T)
-    where
-        T: Drawable + 'static + ?Sized,
-    {
-        self.objects.push(Box::new(object));
+
+    pub fn draw_object(&mut self, object: Object) {
+        self.objects.push(object);
     }
 
-    pub fn draw_multiple_objects(&self, objects: &Vec<impl Drawable>) {
-        for object in objects {
-            object.draw();
-        }
+    pub fn draw_multiple_objects(&mut self, objects: Vec<Object>) {
+        self.objects.extend(objects);
     }
+
     fn create(settings: Settings) -> Self {
         Engine {
             running: true,
@@ -46,20 +42,23 @@ impl Engine {
     }
 
     pub fn start(settings: Settings, app_struct: &mut impl App) {
-        let mut engine = Rc::new(Engine::create(settings));
+        let mut engine = Engine::create(settings.clone());
         let renderer = Renderer::new();
 
-        // window createn
+        // Todo: Ascii "fenster" starten.
 
         while engine.running {
             app_struct.update(&mut engine);
-            renderer.render_frame(engine.objects);
-            engine.objects.clear(); // nach jedem frame alles wieder clearen
+
+            // Todo: Refresh rate einbauen -> konstat aktualisieren.
+            renderer.render_frame(&settings.screen_size, &engine.objects);
+
+            engine.objects.clear();
         }
 
-        // window closen
+        // Todo: Ascii "fenster" beenden.
     }
-    pub fn quit(&mut self) {
+    pub fn stop(&mut self) {
         self.running = false;
     }
 }

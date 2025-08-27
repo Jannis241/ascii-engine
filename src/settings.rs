@@ -1,7 +1,10 @@
+#[derive(Clone)]
 pub enum Dimension {
     drei_dimensional,
     zwei_dimensional,
 }
+
+#[derive(Clone)]
 pub struct Settings {
     pub dimension: Dimension,
     pub refresh_rate: u32,
