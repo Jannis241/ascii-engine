@@ -1,0 +1,30 @@
+use crate::{input::InputHandler, renderer::Renderer};
+
+pub struct Settings {
+    dimension: Dimension,
+    refresh_rate: i32,
+    screen_size: (i32,i32)
+}
+
+
+pub struct Engine {
+    renderer: Renderer,
+    input_handler: InputHandler,
+    settings: Settings,
+}
+
+enum Dimension {
+    drei_dimensional,
+    zwei_dimensional,
+}
+
+impl Engine {
+    pub fn new(settings: Settings) -> Self {
+        Self {
+            renderer: (),
+            input_handler: (),
+            settings: (),
+        }
+    }
+    fn run(&self) {}
+}
