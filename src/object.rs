@@ -14,6 +14,10 @@ impl Object {
     pub fn custom(blocked_points: Vec<(u32, u32)>, color: Color) -> Object {
         Object { blocked_points }
     }
+    pub fn square(top_left: (u32, u32), bottom_right: (u32, u32), color: Color) -> Self {
+        let blocked_points = vec![];
+        Object { blocked_points }
+    }
 
     pub fn circle(center: (u32, u32), radius: u32, color: Color) -> Self {
         let blocked_points = vec![];
