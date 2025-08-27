@@ -1,9 +1,7 @@
 mod engine;
 mod input;
-mod object;
 mod renderer;
 mod settings;
 
-pub use engine::{App, Engine};
-pub use object::{Color, Object};
+pub use engine::{App, Color, Engine};
 pub use settings::{Dimension, Settings};
