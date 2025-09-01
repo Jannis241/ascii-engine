@@ -1,4 +1,4 @@
-use crate::Object;
+use crate::engine::Object;
 
 pub struct Renderer;
 

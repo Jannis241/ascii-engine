@@ -6,7 +6,7 @@ pub trait App {
     fn update(&mut self, engine: &mut Engine);
 }
 
-enum Color {
+pub enum Color {
     Black,
     White,
     Grey,
@@ -15,25 +15,37 @@ enum Color {
     Yellow,
 }
 
-pub struct Character {
-    content: char,
-    pos: Pos,
+pub struct Object {
+    blocked_points: Vec<u32>,
+    z_index: u32,
     color: Color,
 }
 
-impl Character {
-    pub fn new(content: char, pos: Pos, color: Color) -> Self {
-        Self {
-            content,
-            pos,
+// Todo: Später alle methoden public machen, damit man selber objecte erstellen kann
+// und nicht erst zb draw_line aufrufen muss sondern das lineobject erstellen kann
+// und es direkt drawn kann.
+impl Object {
+    fn custom(blocked_points: Vec<u32>, z_index: u32, color: Color) -> Self {
+        Object {
+            blocked_points,
+            z_index,
             color,
         }
+    }
+    pub fn get_blocked_points(&self) -> &Vec<u32> {
+        return &self.blocked_points;
+    }
+    pub fn get_color(&self) -> &Color {
+        return &self.color;
+    }
+    pub fn get_z_index(&self) -> &u32 {
+        return &self.z_index;
     }
 }
 
 pub struct Engine {
     running: bool,
-    frame: Vec<Vec<Character>>,
+    objects: Vec<Object>,
     settings: Settings,
 }
 
@@ -48,8 +60,17 @@ impl Engine {
 
     // Todo: index einrichten -> dass man gesteuert bestimmte dinge über andere zeichnen kann.
 
-    pub fn draw_line(&self, start_pos: Pos, end_pos: Pos, dicke: f32, color: Color) {
+    pub fn draw_line(
+        &mut self,
+        start_pos: Pos,
+        end_pos: Pos,
+        dicke: f32,
+        color: Color,
+        z_index: u32,
+    ) {
         // todo: wirklich genau die symbole und alles ausrechnen und dann in self.objects packen
+        let object = Object::custom(vec![3, 5, 6, 7], 1, Color::White);
+        self.objects.push(object);
     }
     pub fn draw_circle(&self) {}
     pub fn draw_square(&self) {}
@@ -58,7 +79,7 @@ impl Engine {
     fn create(settings: Settings) -> Self {
         Engine {
             running: true,
-            frame: vec![vec![]],
+            objects: Vec::new(),
             settings,
         }
     }
@@ -73,9 +94,9 @@ impl Engine {
             app_struct.update(&mut engine);
 
             // Todo: Refresh rate einbauen -> konstat aktualisieren.
-            renderer.render_frame(&settings.screen_size, &engine.frame);
+            renderer.render_frame(&settings.screen_size, &engine.objects);
 
-            engine.frame.clear();
+            engine.objects.clear();
         }
 
         // Todo: Ascii "fenster" beenden.

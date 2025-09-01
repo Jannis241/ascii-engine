@@ -9,7 +9,11 @@ impl Game {
 
 impl App for Game {
     fn update(&mut self, engine: &mut Engine) {
-        engine.draw_line((0, 0), (1920, 1080), 1, Color::White);
+        for i in 0..5 {
+            engine.draw_line((0, 0), (1920, 1080), 1.0, Color::White, 0);
+            engine.draw_line((0, 0), (1920, 1080), 1.0, Color::White, 0);
+            engine.draw_line((0, 0), (1920, 1080), 1.0, Color::White, 0);
+        }
         engine.stop();
     }
 }
